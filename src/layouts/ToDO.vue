@@ -99,14 +99,17 @@
   </q-layout>
 </template>
 
+
 <script>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useTodoStore } from "../stores/todo";
+import { useRouter } from "vue-router";
 
 export default {
   setup() {
     const todoStore = useTodoStore();
     const newTodo = ref({ text: "", description: "" });
+    const router = useRouter();
 
     function addTodo() {
       if (newTodo.value.text.trim()) {
@@ -134,13 +137,16 @@ export default {
 
     function logout() {
       localStorage.removeItem("authToken");
-      this.$router.push("/");
+      router.push("/"); // Use router.push instead of this.$router.push
     }
 
-    // add restrict to this page if localStorage don't have a authToken than redirect to login page
-    if (!localStorage.getItem("authToken")) {
-      this.$router.push("/");
-    }
+    // Use onMounted to check for authToken after the component is mounted
+    onMounted(() => {
+      // Check if authToken is not present and redirect to login page
+      if (!localStorage.getItem("authToken")) {
+        router.push("/");
+      }
+    });
 
     return {
       todoStore,
@@ -154,9 +160,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.completed {
-  text-decoration: line-through;
-}
-</style>

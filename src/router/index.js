@@ -31,14 +31,17 @@ export default route(function (/* { store, ssrContext } */) {
     // quasar.conf.js -> build -> vueRouterMode
     // quasar.conf.js -> build -> publicPath
     history: createHistory(process.env.VUE_ROUTER_BASE),
-    // add restrict to todo page if localStorage don't have a authToken than redirect to login page
+    // add restriction to todo page if user is logged in than check loaclstorage if inside of local storage is token than allow to go to todo page else redirect to login page
     beforeEach: (to, from, next) => {
       if (to.path === "/todo") {
-        if (!localStorage.getItem("authToken")) {
-          next("/");
+        if (localStorage.getItem("token")) {
+          next();
+        } else {
+          next({ path: "/" });
         }
+      } else {
+        next();
       }
-      next();
     },
   });
 
