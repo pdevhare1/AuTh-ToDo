@@ -52,8 +52,6 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-
-
 const firebaseAuth = getAuth(app);
 const firebaseGoogleAuthProvider = new GoogleAuthProvider();
 
@@ -69,6 +67,11 @@ export default {
       try {
         const { email, password } = this;
         await signInWithEmailAndPassword(firebaseAuth, email, password);
+        const user = firebaseAuth.currentUser;
+        if (user) {
+          await user.getIdToken(true);
+          console.log("Firebase ID token:", user.getIdToken());
+        }
         this.$router.push("/todo");
       } catch (error) {
         console.error(
@@ -80,9 +83,13 @@ export default {
     async signInWithGoogle() {
       try {
         await signInWithPopup(firebaseAuth, firebaseGoogleAuthProvider);
+        const user = firebaseAuth.currentUser;
+        if (user) {
+          await user.getIdToken(true);
+          console.log("Firebase ID token:", user.getIdToken());
+        }
         this.$router.push("/todo");
       } catch (error) {
-
         console.error("Error signing in with Google:", error.message);
       }
     },

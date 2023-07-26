@@ -35,14 +35,6 @@
         </q-form>
       </q-card-section>
     </q-card>
-
-    <!-- Toast notification -->
-    <q-toast
-      position="top"
-      :message="toastMessage"
-      :color="toastColor"
-      ref="toast"
-    />
   </div>
 </template>
 
