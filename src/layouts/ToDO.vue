@@ -141,12 +141,12 @@ export default {
     }
 
     // Use onMounted to check for authToken after the component is mounted
-    onMounted(() => {
-      // Check if authToken is not present and redirect to login page
-      if (!localStorage.getItem("authToken")) {
-        router.push("/");
-      }
-    });
+    // onMounted(() => {
+    //   // Check if authToken is not present and redirect to login page
+    //   if (!localStorage.getItem("authToken")) {
+    //     router.push("/");
+    //   }
+    // });
 
     return {
       todoStore,

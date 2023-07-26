@@ -7,15 +7,6 @@ import {
 } from "vue-router";
 import routes from "./routes";
 
-/*
- * If not building with SSR mode, you can
- * directly export the Router instantiation;
- *
- * The function below can be async too; either use
- * async/await or return a Promise which resolves
- * with the Router instance.
- */
-
 export default route(function (/* { store, ssrContext } */) {
   const createHistory = process.env.SERVER
     ? createMemoryHistory
@@ -26,23 +17,28 @@ export default route(function (/* { store, ssrContext } */) {
   const Router = createRouter({
     scrollBehavior: () => ({ left: 0, top: 0 }),
     routes,
-
-    // Leave this as is and make changes in quasar.conf.js instead!
-    // quasar.conf.js -> build -> vueRouterMode
-    // quasar.conf.js -> build -> publicPath
     history: createHistory(process.env.VUE_ROUTER_BASE),
-    // add restriction to todo page if user is logged in than check loaclstorage if inside of local storage is token than allow to go to todo page else redirect to login page
-    beforeEach: (to, from, next) => {
-      if (to.path === "/todo") {
-        if (localStorage.getItem("token")) {
-          next();
-        } else {
-          next({ path: "/" });
-        }
-      } else {
-        next();
-      }
-    },
+    // Add restrictions to todo page and authentication checks for login and sign-up pages
+    // beforeEach: (to, from, next) => {
+    //   const isLogged = !!localStorage.getItem("token");
+    //   if (to.path === "/todo") {
+    //     // Check if user is logged in
+    //     if (isLogged) {
+    //       next();
+    //     } else {
+    //       next({ path: "/" }); // Redirect to login page if not logged in
+    //     }
+    //   } else if (to.path === "/" || to.path === "/SignUp") {
+    //     // Check if user is already logged in, then prevent access to login and sign-up pages
+    //     if (isLogged) {
+    //       next({ path: "/todo" });
+    //     } else {
+    //       next(); // Allow access to login and sign-up pages for non-logged-in users
+    //     }
+    //   } else {
+    //     next(); // Allow access to other pages
+    //   }
+    // },
   });
 
   return Router;

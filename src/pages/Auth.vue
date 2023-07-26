@@ -13,6 +13,14 @@
               label="Sign In"
               type="submit"
             />
+            <p class="q-mt-lg text-bold">OR</p>
+            <q-btn
+              @click="signInWithGoogle"
+              outline
+              style="color: #1976d2"
+              label="Sign In with"
+              icon-right="img:src/assets/google.png"
+            />
             <p class="text-bold q-mt-lg">
               Don't Have an Account?
               <router-link to="/SignUp"> Sign Up </router-link>
@@ -24,7 +32,31 @@
   </div>
 </template>
 
-<script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from "https://www.gstatic.com/firebasejs/10.1.0/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCXnzTqvVhBlJlZUTauc-5dY6DIIkJv3g4",
+  authDomain: "myproject-bc18e.firebaseapp.com",
+  databaseURL: "https://myproject-bc18e-default-rtdb.firebaseio.com",
+  projectId: "myproject-bc18e",
+  storageBucket: "myproject-bc18e.appspot.com",
+  messagingSenderId: "153215190685",
+  appId: "1:153215190685:web:77b7c5c9f8093034393674",
+};
+
+const app = initializeApp(firebaseConfig);
+
+
+const firebaseAuth = getAuth(app);
+const firebaseGoogleAuthProvider = new GoogleAuthProvider();
+
 export default {
   data() {
     return {
@@ -35,42 +67,24 @@ export default {
   methods: {
     async signInWithEmail() {
       try {
-        if (localStorage.getItem("authToken")) {
-          alert("You are already logged in.");
-          return;
-        }
-        const response = await fetch(
-          `https://myproject-bc18e-default-rtdb.firebaseio.com/users.json?orderBy="email"&equalTo="${this.email}"`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        const userData = await response.json();
-        const users = Object.values(userData);
-        const user = users.find((u) => u.password === this.password);
-
-        if (user) {
-          if (user.authToken) {
-            localStorage.setItem("authToken", user.authToken);
-
-            this.$router.push("/todo");
-          } else {
-            alert("Authentication failed. Please try again.");
-          }
-        } else {
-          alert("Invalid email or password. Please try again.");
-        }
+        const { email, password } = this;
+        await signInWithEmailAndPassword(firebaseAuth, email, password);
+        this.$router.push("/todo");
       } catch (error) {
-        console.error("Error signing in:", error);
+        console.error(
+          "Error signing in with email and password:",
+          error.message
+        );
       }
     },
-    verifyAuthToken(authToken) {
-      const storedAuthToken = localStorage.getItemItem("authToken");
-      return authToken === storedAuthToken;
+    async signInWithGoogle() {
+      try {
+        await signInWithPopup(firebaseAuth, firebaseGoogleAuthProvider);
+        this.$router.push("/todo");
+      } catch (error) {
+
+        console.error("Error signing in with Google:", error.message);
+      }
     },
   },
 };

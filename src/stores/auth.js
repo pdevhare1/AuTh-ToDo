@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import firebase from "firebase/app";
-
+import "firebase/auth";
+import firebaseConfig from "../boot/firebaseConfig";
 export const useAuthStore = defineStore({
   id: "auth",
   state: () => ({
@@ -13,10 +14,10 @@ export const useAuthStore = defineStore({
           .auth()
           .signInWithEmailAndPassword(email, password);
         this.user = userCredential.user;
-        return true; // Return true if sign-in is successful
+        return true;
       } catch (error) {
         console.error(error);
-        return false; // Return false if sign-in fails
+        return false;
       }
     },
     async signInWithGoogle() {
@@ -24,10 +25,10 @@ export const useAuthStore = defineStore({
       try {
         const userCredential = await firebase.auth().signInWithPopup(provider);
         this.user = userCredential.user;
-        return true; // Return true if sign-in is successful
+        return true;
       } catch (error) {
         console.error(error);
-        return false; // Return false if sign-in fails
+        return false;
       }
     },
     async signOut() {
