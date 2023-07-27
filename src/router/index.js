@@ -20,22 +20,22 @@ export default route(function (/* { store, ssrContext } */) {
     history: createHistory(process.env.VUE_ROUTER_BASE),
   });
 
-  router.beforeEach((to, from, next) => {
-    // Check if authToken and uniqueId are present in localStorage
-    if (
-      localStorage.getItem("firebaseToken") &&
-      localStorage.getItem("uniqueId")
-    ) {
-      // If both are present, restrict access to sign-in and sign-up pages
-      if (to.path === "/" || to.path === "/SignUp") {
-        next("/todo");
-      } else {
-        next(); // Continue with the regular navigation
-      }
-    } else {
-      next(); // Continue with the regular navigation
-    }
-  });
+  // router.beforeEach((to, from, next) => {
+  //   // Check if authToken and uniqueId are present in localStorage
+  //   if (
+  //     localStorage.getItem("firebaseToken") &&
+  //     localStorage.getItem("uniqueId")
+  //   ) {
+  //     // If both are present, restrict access to sign-in and sign-up pages
+  //     if (to.path === "/" || to.path === "/SignUp") {
+  //       next("/todo");
+  //     } else {
+  //       next(); // Continue with the regular navigation
+  //     }
+  //   } else {
+  //     next(); // Continue with the regular navigation
+  //   }
+  // });
 
   return router;
 });

@@ -39,6 +39,10 @@
           bottom-slots
           label="Add Todo"
           class="q-my-md"
+          :class="{
+            'q-xs-md': $q.screen.width < 576,
+            'q-sm-md': $q.screen.width >= 576 && $q.screen.width < 768,
+          }"
         >
           <template v-slot:prepend>
             <q-icon name="event" />
@@ -58,6 +62,10 @@
           bottom-slots
           label="Short Description"
           class="q-my-md"
+          :class="{
+            'q-xs-md': $q.screen.width < 576,
+            'q-sm-md': $q.screen.width >= 576 && $q.screen.width < 768,
+          }"
         >
           <template v-slot:prepend>
             <q-icon name="subject" />
@@ -141,14 +149,14 @@ export default {
     }
 
     // Use onMounted to check for authToken after the component is mounted
-    onMounted(() => {
-      if (
-        !localStorage.getItem("firebaseToken") ||
-        !localStorage.getItem("uniqueId")
-      ) {
-        router.push("/");
-      }
-    });
+    // onMounted(() => {
+    //   if (
+    //     !localStorage.getItem("firebaseToken") ||
+    //     !localStorage.getItem("uniqueId")
+    //   ) {
+    //     router.push("/");
+    //   }
+    // });
 
     return {
       todoStore,
