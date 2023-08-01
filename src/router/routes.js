@@ -4,6 +4,10 @@ const routes = [
     component: () => import("pages/Auth.vue"),
   },
   {
+    path: "/phoneAuth",
+    component: () => import("pages/PhoneAuth.vue"),
+  },
+  {
     path: "/SignUp",
     component: () => import("pages/SignUp.vue"),
   },

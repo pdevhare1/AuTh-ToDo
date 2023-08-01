@@ -1,4 +1,3 @@
-// src/boot/firebase.js
 import firebase from "firebase/app";
 import "firebase/auth";
 
@@ -12,5 +11,7 @@ const firebaseConfig = {
   appId: "1:153215190685:web:77b7c5c9f8093034393674",
 };
 
-const firebaseApp = firebase.initializeApp(firebaseConfig);
-export const firebaseAuth = firebaseApp.auth();
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+export default firebase;

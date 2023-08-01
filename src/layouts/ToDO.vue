@@ -39,6 +39,10 @@
           bottom-slots
           label="Add Todo"
           class="q-my-md"
+          :class="{
+            'q-xs-md': $q.screen.width < 576,
+            'q-sm-md': $q.screen.width >= 576 && $q.screen.width < 768,
+          }"
         >
           <template v-slot:prepend>
             <q-icon name="event" />
@@ -58,6 +62,10 @@
           bottom-slots
           label="Short Description"
           class="q-my-md"
+          :class="{
+            'q-xs-md': $q.screen.width < 576,
+            'q-sm-md': $q.screen.width >= 576 && $q.screen.width < 768,
+          }"
         >
           <template v-slot:prepend>
             <q-icon name="subject" />
@@ -99,7 +107,6 @@
   </q-layout>
 </template>
 
-
 <script>
 import { ref, onMounted } from "vue";
 import { useTodoStore } from "../stores/todo";
@@ -136,17 +143,20 @@ export default {
     }
 
     function logout() {
-      localStorage.removeItem("authToken");
+      localStorage.removeItem("firebaseToken");
+      localStorage.removeItem("uniqueId");
       router.push("/"); // Use router.push instead of this.$router.push
     }
 
     // Use onMounted to check for authToken after the component is mounted
-    onMounted(() => {
-      // Check if authToken is not present and redirect to login page
-      if (!localStorage.getItem("authToken")) {
-        router.push("/");
-      }
-    });
+    // onMounted(() => {
+    //   if (
+    //     !localStorage.getItem("firebaseToken") ||
+    //     !localStorage.getItem("uniqueId")
+    //   ) {
+    //     router.push("/");
+    //   }
+    // });
 
     return {
       todoStore,
